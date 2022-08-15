@@ -1,3 +1,4 @@
+use crate::graphics::reference_axes::ReferenceAxes;
 use std::{io, mem::size_of};
 
 use fj_interop::status_report::StatusReport;
@@ -57,6 +58,7 @@ pub struct Renderer {
 
     geometries: Geometries,
     pipelines: Pipelines,
+    reference_axes: ReferenceAxes,
 
     config_ui: ConfigUi,
 
@@ -248,6 +250,8 @@ impl Renderer {
             1,
         );
 
+        let reference_axes = ReferenceAxes::new(&device);
+
         Ok(Self {
             surface,
             features,
@@ -262,6 +266,7 @@ impl Renderer {
 
             geometries,
             pipelines,
+            reference_axes,
 
             config_ui,
 
@@ -375,6 +380,14 @@ impl Renderer {
                 )
                 .map_err(DrawError::Text)?;
         }
+
+        self.reference_axes.draw(
+            &mut encoder,
+            &color_view,
+            &self.depth_view,
+            &self.bind_group,
+            &self.pipelines.model,
+        );
 
         //
         // NOTE: The following comment was written for the original

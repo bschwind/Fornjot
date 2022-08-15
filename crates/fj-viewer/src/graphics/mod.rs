@@ -5,6 +5,7 @@ mod draw_config;
 mod drawables;
 mod geometries;
 mod pipelines;
+mod reference_axes;
 mod renderer;
 mod shaders;
 mod transform;
